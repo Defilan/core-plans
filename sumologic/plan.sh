@@ -4,14 +4,12 @@ pkg_version="19.209-23"
 pkg_maintainer="The Habitat Maintainers <humans@habitat.sh>"
 pkg_license=('Apache-2.0')
 pkg_source="https://collectors.sumologic.com/rest/download/tar"
-pkg_dirname="sumocollector"
 pkg_filename="SumoCollector_unix_19_209-23.tar.gz"
-pkg_shasum="da0a6a63984ced68f3feaaed50aa01e87110d394b51ff8a6096ac720586c3d2f"
 pkg_shasum="9f153f06ac2c884fd6c31fa476b31e3a690e0d47c7ec348fd7c59e84fb569ce1"
 pkg_deps=(core/jre8 core/glibc core/gcc-libs)
 pkg_build_deps=(core/patchelf)
-pkg_lib_dirs=("${pkg_name}/${pkg_version}/lib" "${pkg_name}/${pkg_version}/bin/native/lib")
-pkg_bin_dirs=("${pkg_name}/${pkg_version}/bin" "${pkg_name}/${pkg_version}/bin/native/lib")
+pkg_lib_dirs=("${pkg_version}/lib" "${pkg_version}/bin/native/lib")
+pkg_bin_dirs=("${pkg_version}/bin")
 pkg_description="Sumo Logic’s powerful, scalable SaaS platform analyzes log data and metrics together in real time."
 pkg_upstream_url="https://www.sumologic.com"
 pkg_svc_user="root"
@@ -29,8 +27,8 @@ do_install() {
 
   # Move the linux wrapper into place
   # https://help.sumologic.com/Send-Data/Collector-FAQs/How-do-I-use-the-binary-package-to-install-a-Collector-on-Windows-or-MacOS
-  mv tanuki/linux64/wrapper ./
-  chmod +x wrapper "${pkg_version}/bin/collector"
+  mv tanuki/linux64/wrapper "${pkg_version}/"
+  chmod +x "${pkg_version}/wrapper" "${pkg_version}/bin/collector"
   mv "tanuki/linux64/libwrapper.so" "${pkg_version}/bin/native/lib/"
 
   rm -r powershell tanuki SumoEtw.man collector config \
@@ -39,7 +37,7 @@ do_install() {
 
   patchelf --interpreter "$(pkg_path_for glibc)/lib/ld-linux-x86-64.so.2" --set-rpath "$LD_RUN_PATH" wrapper
 
-  cp -a . "${pkg_prefix}/${pkg_name}"
+  cp -a . "${pkg_name}"
 }
 
 do_strip() {
