@@ -17,4 +17,6 @@ do_build() {
   make
 }
 
-
+do_check() {
+  make check
+}
