@@ -20,9 +20,6 @@ pkg_exports=(
 )
 pkg_exposes=(port-dns port-http port-serf_lan port-serf_wan port-server)
 
-pkg_svc_user=root
-pkg_svc_group=root
-
 do_unpack() {
   cd "${HAB_CACHE_SRC_PATH}" || exit
   unzip ${pkg_filename} -d "${pkg_name}-${pkg_version}"
